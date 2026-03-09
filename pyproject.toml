@@ -45,4 +45,4 @@ override-dependencies = [
 ]
 
 [tool.uv.sources]
-ai-parrot = { path = "../../navigator/ai-parrot", editable = true }
+# ai-parrot = { path = "../../navigator/ai-parrot", editable = true }
