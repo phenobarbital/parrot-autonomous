@@ -119,12 +119,31 @@ For production deployments, use `gunicorn` with the provided configuration:
 
 ```bash
 source .venv/bin/activate
-gunicorn run:app -c gunicorn.conf.py
+gunicorn nav:navigator -c gunicorn_config.py
 ```
 
-The `gunicorn.conf.py` is pre-configured to use the `aiohttp.GunicornWebWorker` worker class with automatic worker scaling based on available CPU cores.
+The `gunicorn_config.py` is pre-configured to use the `aiohttp.worker.GunicornUVLoopWebWorker` worker class with automatic worker scaling based on available CPU cores.
+
+### Running with Supervisor and Systemd
+
+To ensure the application runs continuously in the background and restarts automatically via SystemD's standard process management, you can configure it with `supervisor`.
+
+1. Generate and install the supervisord configuration file:
+   ```bash
+   # From your project root
+   python scripts/setup_supervisord.py --user your_linux_user --reload
+   ```
+2. The script will dynamically generate `parrot-autonomous.conf` in `/etc/supervisor/conf.d/` and reload the supervisor daemon to start the app.
+3. You can monitor or restart the service using `supervisorctl`:
+   ```bash
+   sudo supervisorctl status parrot-autonomous
+   sudo supervisorctl restart parrot-autonomous
+   ```
+
+*(See [docs/supervisord.md](docs/supervisord.md) for detailed configuration options.)*
 
 ## How It Works
+
 
 ```
 ┌─────────────────────────────────────────────────┐
